@@ -1,25 +1,13 @@
-import { Head } from "$fresh/runtime.ts";
-import { State } from "./_middleware.ts"
-import { HandlerContext, Handlers, PageProps } from "$fresh/server.ts";
-
+// routes/index.tsx
 export const handler: Handlers = {
-  async GET(_req: Request, ctx: HandlerContext<State>) {
-    console.log("GET Handler")
-    console.log(ctx.state)
-    const resp = await ctx.render(ctx.state);
-    return resp;
+  GET(_req, ctx) {
+      return ctx.render(ctx.state);
   },
 };
 
-export default function Page({ data }: PageProps<State>) {
-  const {hostname } = data;
-
-  return (
-    <>
-      <Head>
-        <title>fresh-show-ip</title>
-      </Head>
-            Visitor IP : {hostname}
-    </>
-  );
+export default function Ip(props: PageProps) {
+  console.log("ip")
+  console.log(props)
+  const hostname = props.state?.hostname || "no ip"
+  return <p>hostname is: {hostname}</p>;
 }

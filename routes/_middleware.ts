@@ -5,18 +5,33 @@ export interface State {
   hostname: string;
 }
 
-function getIp(_req: Request, ctx: MiddlewareHandlerContext<State>) {
-  ctx.state = {}
+export async function handler(
+  _req: Request,
+  ctx: MiddlewareHandlerContext<State>,
+) {
+  console.log("_middle")
   if (ctx.remoteAddr.transport === "tcp") {
     ctx.state.hostname = ctx.remoteAddr.hostname;
   } else {
     ctx.state.hostname = "not tcp";
   }
-  ctx.state.data = "test data"
   console.log("getIp : " + ctx.state.hostname)
-  return ctx.next();
+  return await ctx.next();
+}
+
+/*
+function async getIp(_req: Request, ctx : MiddlewareHandlerContext<State>) {
+  //ctx.state = {}
+  if (ctx.remoteAddr.transport === "tcp") {
+    ctx.state.hostname = ctx.remoteAddr.hostname;
+  } else {
+    ctx.state.hostname = "not tcp";
+  }
+  console.log("getIp : " + ctx.state.hostname)
+  return await ctx.next();
 }
 
 export const handler = [
   getIp,
 ];
+*/
